@@ -9,6 +9,7 @@ export const initialState = {
         updateDate: '11.02.2020',
         mail: 'janedoe@example.com',
         status: 'published',
+        userId: '1',
       },
       {
         id: '2',
@@ -18,6 +19,7 @@ export const initialState = {
         updateDate: '13.02.2020',
         mail: 'harry.hole@example.com',
         status: 'published',
+        userId: '2',
       },
       {
         id: '3',
@@ -27,6 +29,7 @@ export const initialState = {
         updateDate: '15.02.2020',
         mail: 'TonyGreen@example.com',
         status: 'published',
+        userId: '3',
       },
       {
         id: '4',
@@ -36,6 +39,7 @@ export const initialState = {
         updateDate: '19.03.2020',
         mail: 'janedoe@example.com',
         status: 'published',
+        userId: '1',
       },
       {
         id: '5',
@@ -45,6 +49,7 @@ export const initialState = {
         updateDate: '20.03.2020',
         mail: 'harry.hole@example.com',
         status: 'published',
+        userId: '2',
       },
       {
         id: '6',
@@ -54,6 +59,7 @@ export const initialState = {
         updateDate: '11.04.2020',
         mail: 'TonyGreen@example.com',
         status: 'published',
+        userId: '3',
       },
       {
         id: '7',
@@ -63,11 +69,16 @@ export const initialState = {
         updateDate: '09.05.2020',
         mail: 'TonyGreen@example.com',
         status: 'published',
+        userId: '3',
       },
     ],
     loading: {
       active: false,
       error: false,
     },
+  },
+  user: {
+    id: '',
+    logged: false,
   },
 };
