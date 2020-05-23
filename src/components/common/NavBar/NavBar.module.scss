@@ -1,0 +1,51 @@
+@import '../../../styles/settings.scss';
+
+.root {
+  flex-grow: 1;
+
+  .title {
+    text-transform: uppercase;
+    font-size: 1.5rem;
+    font-family: $font-first;
+    letter-spacing: 2px;
+  }
+
+  .menu {
+    position: absolute;
+    right: 20px;
+
+    .btn {
+      font-family: $font-first;
+      font-size: 1rem;
+      letter-spacing: 1px;
+
+      &:hover {
+        background-color: #f2cf8f;
+        color: $font-dark-second;
+      }
+    }
+  }
+
+  .mobileMenu {
+    display: none;
+  }
+
+}
+
+@media (max-width: 576px) {
+
+  .root {
+
+    .menu {
+      display: none;
+    }
+
+    .mobileMenu {
+      display: block;
+      position: absolute;
+      right: 0;
+    }
+
+  }
+
+}
