@@ -1,1 +1,16 @@
 @import "settings.scss";
+
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  color: $font-medium;
+  background-color: $background-medium;
+  font-size: 12px;
+  line-height: 1.7;
+  letter-spacing: 0.5px;
+}
