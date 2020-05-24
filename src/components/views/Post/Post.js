@@ -20,7 +20,7 @@ import { connect } from 'react-redux';
 import { getAll } from '../../../redux/postsRedux.js';
 import { getUser } from '../../../redux/userRedux';
 
-const Component = ({className, posts, match, user }) => (
+const Component = ({className, posts, match, user}) => (
 
   <div className={clsx(className, styles.root)}>
     <Container maxWidth="lg">
