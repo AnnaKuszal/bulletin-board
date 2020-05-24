@@ -1,5 +1,53 @@
 @import '../../../styles/settings.scss';
 
-// .root {
+.root {
+  margin: 20px;
 
-// }
+  .card {
+    margin: 10px;
+    padding: 15px;
+
+  .title {
+    font-size: 1.3rem;
+    color: $font-medium;
+    font-family: $font-first;
+    font-weight: 600;
+  }
+
+  .subtitle {
+    font-size: 0.8rem;
+    color: $font-dark;
+  }
+
+  .btn {
+    margin: 0 auto;
+    padding: 10px;
+    display: flex;
+    background: $background-dark-second;
+    color: $font-medium-light;
+    font-family: $font-first;
+  }
+
+    .contentWrapper {
+      display: flex;
+      width: 100%;
+      flex-direction: column;
+
+      .content {
+        margin-bottom: 15px;
+
+        > div {
+          min-height: 150px;
+          align-items: end;
+        }
+      }
+
+      .status {
+        margin: 10px 0;
+        text-transform: lowercase;
+      }
+    }
+  }
+
+}
+
