@@ -18,21 +18,29 @@ import { connect } from 'react-redux';
 // import { reduxSelector, reduxActionCreator } from '../../../redux/exampleRedux.js';
 import { getAll } from '../../../redux/postsRedux.js';
 
+import { getUser } from '../../../redux/userRedux';
 
-const Component = ({ className, posts }) => (
+
+const Component = ({ className, posts, user }) => (
   <div className={clsx(className, styles.root)}>
     <h2>Homepage</h2>
 
     <Container maxWidth="lg">
-      <Button color="secondary" aria-label="add" className={styles.button}>
-        <AddIcon /> Add new
-      </Button>
+
+      {user.logged ?
+
+        <Button href={`/post/add`} aria-label="add" className={styles.button}>
+          <AddIcon /> Add new
+        </Button>
+
+        : ''
+      }
 
       {posts.map(el => (
         <Card key={el.id} className={styles.card}>
           <CardContent>
             <Typography gutterBottom >
-              <Link href="#" className={styles.title}>
+              <Link href={`/post/${el.id}`} className={styles.title}>
                 {el.title}
               </Link>
             </Typography>
@@ -53,10 +61,17 @@ Component.propTypes = {
   children: PropTypes.node,
   className: PropTypes.string,
   posts: PropTypes.array,
+  user: PropTypes.object,
+};
+
+Component.defaultProps = {
+  posts: [],
+  user: {},
 };
 
 const mapStateToProps = state => ({
   posts: getAll(state),
+  user: getUser(state),
 });
 
 // const mapDispatchToProps = dispatch => ({
