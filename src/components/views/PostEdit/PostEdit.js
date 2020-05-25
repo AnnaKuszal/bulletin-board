@@ -14,19 +14,33 @@ import Typography from '@material-ui/core/Typography';
 // import { reduxSelector, reduxActionCreator } from '../../../redux/exampleRedux.js';
 
 import { connect } from 'react-redux';
-import { getAll } from '../../../redux/postsRedux.js';
+import { getAll, updatePost } from '../../../redux/postsRedux.js';
 
 
-const Component = ({className, posts, match}) => {
+const Component = ({className, posts, match, updatePost}) => {
 
-  const [value, setValue] = React.useState('');
-
-  const handleChange = (event) => {
-    setValue(event.target.value);
+  const titleProps = {
+    minLength: 10,
   };
 
-  const handleSubmit = (e) => {
+  const contentProps = {
+    minLength: 20,
+  };
+
+  const postArray = posts.filter(el => el.id === match.params.id);
+
+  const [post, setPost] = React.useState(postArray[0]);
+
+  const handleChange = async (event, name) => {
+    await setPost({
+      ...post,
+      [name]: event.target.value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    await updatePost(post);
   };
 
   return (
@@ -48,9 +62,10 @@ const Component = ({className, posts, match}) => {
                 id="title"
                 label="Title"
                 required
+                inputProps={titleProps}
                 defaultValue={el.title}
                 className={styles.textInput}
-                onChange={handleChange}
+                onChange={e => handleChange(e, 'title')}
               />
 
               <TextField
@@ -61,9 +76,10 @@ const Component = ({className, posts, match}) => {
                 placeholder="Text"
                 rows="6"
                 required
+                inputProps={contentProps}
                 defaultValue={el.content}
                 className={styles.textInput}
-                onChange={handleChange}
+                onChange={e => handleChange(e, 'content')}
 
               />
               <TextField
@@ -73,7 +89,7 @@ const Component = ({className, posts, match}) => {
                 required
                 defaultValue={el.mail}
                 className={styles.textInput}
-                onChange={handleChange}
+                onChange={e => handleChange(e, 'email')}
               />
               <TextField
                 id="phone"
@@ -81,7 +97,7 @@ const Component = ({className, posts, match}) => {
                 type="string"
                 defaultValue={el.phone}
                 className={styles.textInput}
-                onChange={handleChange}
+                onChange={e => handleChange(e, 'phone')}
               />
 
               <div>
@@ -117,6 +133,7 @@ Component.propTypes = {
       userId: PropTypes.string,
     })
   ),
+  updatePost: PropTypes.func,
 };
 
 Component.defaultProps = {
@@ -128,13 +145,13 @@ const mapStateToProps = state => ({
 });
 
 
-// const mapDispatchToProps = dispatch => ({
-//   someAction: arg => dispatch(reduxActionCreator(arg)),
-// });
+const mapDispatchToProps = dispatch => ({
+  updatePost: post => dispatch(updatePost(post)),
+});
 
 // const Container = connect(mapStateToProps, mapDispatchToProps)(Component);
 
-const PostEditContainer = connect(mapStateToProps)(Component);
+const PostEditContainer = connect(mapStateToProps, mapDispatchToProps)(Component);
 
 
 export {

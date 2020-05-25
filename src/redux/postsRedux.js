@@ -12,6 +12,7 @@ const FETCH_SUCCESS = createActionName('FETCH_SUCCESS');
 const FETCH_ERROR = createActionName('FETCH_ERROR');
 
 const ADD_POST = createActionName('ADD_POST');
+const UPDATE_POST = createActionName('UPDATE_POST');
 
 /* action creators */
 export const fetchStarted = payload => ({ payload, type: FETCH_START });
@@ -19,6 +20,7 @@ export const fetchSuccess = payload => ({ payload, type: FETCH_SUCCESS });
 export const fetchError = payload => ({ payload, type: FETCH_ERROR });
 
 export const addPost = payload => ({ payload, type: ADD_POST });
+export const updatePost = payload => ({ payload, type: UPDATE_POST });
 
 
 /* thunk creators */
@@ -63,6 +65,18 @@ export const reducer = (statePart = [], action = {}) => {
         ],
       };
     }
+
+    case UPDATE_POST: {
+      return {
+        ...statePart,
+        data: statePart.data.map(el => {
+          return el.id === action.payload.id ?
+            action.payload
+            : el;
+        }),
+      };
+    }
+
     default:
       return statePart;
   }
