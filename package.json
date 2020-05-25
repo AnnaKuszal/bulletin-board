@@ -60,6 +60,7 @@
     "react-test-renderer": "^16.13.1",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
+    "shortid": "^2.2.15",
     "typescript": "^3.9.3"
   },
   "devDependencies": {
