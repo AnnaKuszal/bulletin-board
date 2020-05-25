@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 
+import shortid from 'shortid';
+
 import styles from './PostAdd.module.scss';
 
 import Container from '@material-ui/core/Container';
@@ -10,22 +12,43 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
-// import { connect } from 'react-redux';
-// import { reduxSelector, reduxActionCreator } from '../../../redux/exampleRedux.js';
+import { connect } from 'react-redux';
+import { getAll, addPost } from '../../../redux/postsRedux.js';
 
 
-const Component = ({className}) => {
+const Component = ({className, addPost}) => {
 
-  const [value, setValue] = React.useState('');
-
-  const handleChange = (event) => {
-    setValue(event.target.value);
+  const titleProps = {
+    minLength: 10,
   };
 
-  const handleSubmit = e => {
+  const contentProps = {
+    minLength: 20,
+  };
+
+  const today = new Date();
+  const day = today.getDate();
+  const month = today.getMonth();
+  const year = today.getFullYear();
+  const date = day + '.' + month + '.' + year;
+
+  const [post, setPost] = React.useState({
+    id: shortid.generate(),
+    date: date,
+  });
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Submitted');
+    await addPost(post);
   };
+
+  const handleChange = async (event, name) => {
+    await setPost({
+      ...post,
+      [name]: event.target.value,
+    });
+  };
+
 
   return (
 
@@ -37,7 +60,7 @@ const Component = ({className}) => {
         <Card className={styles.card}>
 
           <Typography gutterBottom className={styles.title}>
-            Edit post
+            Add new post
           </Typography>
 
           <form className={styles.form} onSubmit={e => handleSubmit(e)}>
@@ -45,36 +68,42 @@ const Component = ({className}) => {
               id="title"
               label="Title"
               required
+              value={post.title}
+              inputProps={titleProps}
               className={styles.textInput}
-              onChange={handleChange}
+              onChange={e => handleChange(e, 'title')}
             />
 
             <TextField
               variant="outlined"
               multiline
               id="content"
+              inputProps={contentProps}
               label="Content"
               placeholder="Text"
               rows="6"
               required
+              value={post.content}
               className={styles.textInput}
-              onChange={handleChange}
-
+              onChange={e => handleChange(e, 'content')}
             />
+
             <TextField
               id="mail"
               label="E-mail"
               type="email"
               required
+              value={post.mail}
               className={styles.textInput}
-              onChange={handleChange}
+              onChange={e => handleChange(e, 'mail')}
             />
             <TextField
               id="phone"
               label="Phone number"
               type="string"
+              value={post.phone}
               className={styles.textInput}
-              onChange={handleChange}
+              onChange={e => handleChange(e, 'phone')}
             />
 
             <div>
@@ -93,21 +122,22 @@ const Component = ({className}) => {
 
 Component.propTypes = {
   className: PropTypes.string,
+  addPost: PropTypes.func,
 };
 
-// const mapStateToProps = state => ({
-//   someProp: reduxSelector(state),
-// });
+const mapStateToProps = state => ({
+  posts: getAll(state),
+});
 
-// const mapDispatchToProps = dispatch => ({
-//   someAction: arg => dispatch(reduxActionCreator(arg)),
-// });
+const mapDispatchToProps = dispatch => ({
+  addPost: post => dispatch(addPost(post)),
+});
 
-// const Container = connect(mapStateToProps, mapDispatchToProps)(Component);
+const PostAddContainer = connect(mapStateToProps, mapDispatchToProps)(Component);
 
 
 export {
-  Component as PostAdd,
-  // Container as PostAdd,
+  //Component as PostAdd,
+  PostAddContainer as PostAdd,
   Component as PostAddComponent,
 };
