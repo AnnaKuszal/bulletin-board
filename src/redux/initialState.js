@@ -85,8 +85,8 @@ export const initialState = {
     },
   },
   user: {
-    id: '2',     // ''
-    logged: true,   //false
+    id: '2',
+    logged: true,
     author: 'Harry Hole',
     mail: 'harry.hole@example.com',
   },

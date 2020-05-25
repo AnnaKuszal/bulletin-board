@@ -58,7 +58,7 @@ const Component = ({ className, title, isLogged }) => {
               <Button
                 color="inherit"
                 component={NavLink}
-                to="#"
+                to="/myPosts"
                 activeClassName="active"
                 variant="text"
                 className={styles.btn}>My posts

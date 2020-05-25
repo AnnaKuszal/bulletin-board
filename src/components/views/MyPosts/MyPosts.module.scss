@@ -1,0 +1,31 @@
+@import '../../../styles/settings.scss';
+
+.root {
+  margin: 20px;
+
+
+  .button {
+    margin: 0 auto;
+    padding: 10px;
+    background: $background-dark-second;
+    color: $font-medium-light;
+    font-family: $font-first;
+  }
+
+  .card {
+    margin: 10px;
+  }
+
+  .title {
+    font-size: 1.3rem;
+    color: $font-medium;
+    font-family: $font-first;
+    font-weight: 600;
+  }
+
+  .subtitle {
+    font-size: 0.8rem;
+    color: $font-dark;
+  }
+
+}
