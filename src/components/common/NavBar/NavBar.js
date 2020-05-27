@@ -16,9 +16,10 @@ import { NavLink } from 'react-router-dom';
 // import { connect } from 'react-redux';
 // import { reduxSelector, reduxActionCreator } from '../../../redux/exampleRedux.js';
 
+import { connect } from 'react-redux';
+import { getUser } from '../../../redux/userRedux.js';
 
-const Component = ({ className, title, isLogged }) => {
-
+const Component = ({ className, title, user }) => {
 
   //const [auth, setAuth] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -53,67 +54,81 @@ const Component = ({ className, title, isLogged }) => {
             {title}
           </Button>
 
-          {isLogged ?
-            <div className={styles.menu}>
-              <Button
-                color="inherit"
-                component={NavLink}
-                to="/myPosts"
-                activeClassName="active"
-                variant="text"
-                className={styles.btn}>My posts
-              </Button>
+          {user.logged ?
+            <>
+              <div className={styles.menu}>
+                <Button
+                  color="inherit"
+                  component={NavLink}
+                  to="/myPosts"
+                  activeClassName="active"
+                  variant="text"
+                  className={styles.btn}>My posts
+                </Button>
 
-              <Button color="inherit"
-                component={NavLink}
-                to="#"
-                activeClassName="active"
-                variant="text"
-                className={styles.btn}>Logout
-              </Button>
-            </div >
+                <Button color="inherit"
+                  component={NavLink}
+                  to="#"
+                  activeClassName="active"
+                  variant="text"
+                  className={styles.btn}>Logout
+                </Button>
+              </div>
+
+              <div className={styles.mobileMenu}>
+                <IconButton
+                  aria-label="account of current user"
+                  aria-controls="menu-appbar"
+                  aria-haspopup="true"
+                  onClick={handleMenu}
+                  color="inherit"
+                >
+                  <AccountCircle />
+                </IconButton>
+
+                <MenuList
+                  id="menu-appbar"
+                  className={styles.list}
+                  anchorEl={anchorEl}
+                  anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  open={open}
+                  onClose={handleClose}
+                >
+                  <MenuItem onClick={handleClose}><a href="/myPosts">My posts</a></MenuItem>
+                  <MenuItem onClick={handleClose}><a href="/">Logout</a></MenuItem>
+
+                </MenuList>
+
+              </div>
+            </>
             :
-            <div className={styles.menu}>
-              <Button color="inherit" href="https://google.com" className={styles.btn}>Login</Button>
-            </div>
+            <>
+              <div className={styles.menu}>
+                <Button color="inherit" href="https://google.com" className={styles.btn}>Login</Button>
+              </div>
+
+              <div className={styles.mobileMenu}>
+                <IconButton
+                  aria-label="account of current user"
+                  aria-controls="menu-appbar"
+                  aria-haspopup="true"
+                  href="https://google.com"
+                  //onClick={handleMenu}
+                  color="inherit"
+                >
+                  <AccountCircle />
+                </IconButton>
+              </div>
+            </>
           }
-
-          {/* {auth && ( */}
-          <div className={styles.mobileMenu}>
-            <IconButton
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleMenu}
-              color="inherit"
-            >
-              <AccountCircle />
-            </IconButton>
-
-            <MenuList
-              id="menu-appbar"
-              className={styles.list}
-              anchorEl={anchorEl}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={open}
-              onClose={handleClose}
-
-            >
-              <MenuItem onClick={handleClose}><a href="/myPosts">My posts</a></MenuItem>
-              <MenuItem onClick={handleClose}><a href="/">Logout</a></MenuItem>
-
-            </MenuList>
-
-          </div>
-          {/* )} */}
 
         </Toolbar>
       </AppBar>
@@ -127,21 +142,32 @@ Component.propTypes = {
   className: PropTypes.string,
   title: PropTypes.string,
   isLogged: PropTypes.bool,
+  user: PropTypes.shape({
+    id: PropTypes.string,
+    logged: PropTypes.bool,
+    author: PropTypes.string,
+    mail: PropTypes.string,
+  }),
 };
 
-// const mapStateToProps = state => ({
-//   someProp: reduxSelector(state),
-// });
+Component.defaultProps = {
+  posts: [],
+  user: {},
+};
+
+const mapStateToProps = state => ({
+  user: getUser(state),
+});
 
 // const mapDispatchToProps = dispatch => ({
 //   someAction: arg => dispatch(reduxActionCreator(arg)),
 // });
 
-// const Container = connect(mapStateToProps, mapDispatchToProps)(Component);
+const ComponentContainer = connect(mapStateToProps)(Component);
 
 
 export {
-  Component as NavBar,
-  // Container as NavBar,
+  // Component as NavBar,
+  ComponentContainer as NavBar,
   Component as NavBarComponent,
 };
