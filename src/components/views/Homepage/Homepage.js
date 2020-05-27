@@ -11,76 +11,103 @@ import AddIcon from '@material-ui/icons/Add';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
+//import Paper from '@material-ui/core/Paper';
 
 //import { settings } from '../../../settings';
 
 import { connect } from 'react-redux';
 // import { reduxSelector, reduxActionCreator } from '../../../redux/exampleRedux.js';
-import { getAll } from '../../../redux/postsRedux.js';
-
+import { getAll, fetchFromAPI, getLoadingState } from '../../../redux/postsRedux.js';
 import { getUser } from '../../../redux/userRedux';
 
+class Component extends React.Component {
 
-const Component = ({ className, posts, user }) => (
-  <div className={clsx(className, styles.root)}>
-    <h2>Homepage</h2>
+  static propTypes = {
+    className: PropTypes.string,
+    posts: PropTypes.array,
+    user: PropTypes.object,
+    loadPosts: PropTypes.func,
+    loading: PropTypes.shape({
+      active: PropTypes.bool,
+      error: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
+    }),
+  };
 
-    <Container maxWidth="lg">
+  static defaultProps = {
+    posts: [],
+    user: {},
+    loading: {},
+  };
 
-      {user.logged ?
+  render() {
 
-        <Button href={`/post/add`} aria-label="add" className={styles.button}>
-          <AddIcon /> Add new
-        </Button>
+    const { className, posts, user, loading: { active, error } } = this.props;
 
-        : ''
-      }
 
-      {posts.map(el => (
-        <Card key={el.id} className={styles.card}>
-          <CardContent>
-            <Typography gutterBottom >
-              <Link href={`/post/${el.id}`} className={styles.title}>
-                {el.title}
-              </Link>
-            </Typography>
-            <Typography className={styles.subtitle} gutterBottom>
-              Date: {el.date} / Modified: {el.updateDate}
-            </Typography>
-          </CardContent>
+    if(active || !posts.length){
+      return (
+        <p>Loading...</p>
+      );
+    } else if(error) {
+      return (
+        <div>
+          <p>Error! Details:</p>
+          <pre>{error}</pre>
+        </div>
+      );
+    } else {
 
-        </Card>
-      ))}
+      return (
 
-    </Container>
+        <div className={clsx(className, styles.root)}>
+          <h2>Homepage</h2>
 
-  </div>
-);
+          <Container maxWidth="lg">
 
-Component.propTypes = {
-  children: PropTypes.node,
-  className: PropTypes.string,
-  posts: PropTypes.array,
-  user: PropTypes.object,
-};
+            {user.logged ?
 
-Component.defaultProps = {
-  posts: [],
-  user: {},
-};
+              <Button href={`/post/add`} aria-label="add" className={styles.button}>
+                <AddIcon /> Add new
+              </Button>
+
+              : ''
+            }
+
+            {posts.map(el => (
+              <Card key={el.id} className={styles.card}>
+                <CardContent>
+                  <Typography gutterBottom >
+                    <Link href={`/post/${el.id}`} className={styles.title}>
+                      {el.title}
+                    </Link>
+                  </Typography>
+                  <Typography className={styles.subtitle} gutterBottom>
+                    Date: {el.date} / Modified: {el.updateDate}
+                  </Typography>
+                </CardContent>
+
+              </Card>
+            ))}
+          </Container>
+        </div>
+      );
+    }
+  }
+}
 
 const mapStateToProps = state => ({
   posts: getAll(state),
   user: getUser(state),
+  loading: getLoadingState(state),
 });
 
-// const mapDispatchToProps = dispatch => ({
-//   someAction: arg => dispatch(reduxActionCreator(arg)),
-// });
+const mapDispatchToProps = (dispatch, state) => ({
+  loadPosts: () => dispatch(fetchFromAPI(state)),
+});
 
 // const Container = connect(mapStateToProps, mapDispatchToProps)(Component);
 
-const HomepageContainer = connect(mapStateToProps)(Component);
+const HomepageContainer = connect(mapStateToProps, mapDispatchToProps)(Component);
 
 export {
   //Component as Homepage,
