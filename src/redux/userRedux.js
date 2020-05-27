@@ -6,10 +6,10 @@ const reducerName = 'user';
 const createActionName = name => `app/${reducerName}/${name}`;
 
 /* action types */
-const TOGGLE_LOGIN = createActionName('TOGGLE_LOGIN');
+const CHANGE_USER = createActionName('CHANGE_USER');
 
 /* action creators */
-export const toggleLogin = payload => ({ payload, type: TOGGLE_LOGIN });
+export const changeUser  = payload => ({ payload, type: CHANGE_USER });
 
 /* thunk creators */
 
@@ -18,7 +18,7 @@ export const reducer = (statePart = [], action = {}) => {
   // console.log('statePart', statePart);
   // console.log('action', action);
   switch (action.type) {
-    case TOGGLE_LOGIN: {
+    case CHANGE_USER: {
       if(!statePart.logged) {
         return {
           ...statePart,

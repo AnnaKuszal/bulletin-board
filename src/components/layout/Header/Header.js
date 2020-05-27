@@ -9,7 +9,7 @@ import { NavBar } from '../../common/NavBar/NavBar';
 
 const Component = ({ className }) => (
   <div className={clsx(className, styles.root)}>
-    <NavBar title='Bulletin board' isLogged={true} />
+    <NavBar title='Bulletin board' />
   </div>
 );
 
