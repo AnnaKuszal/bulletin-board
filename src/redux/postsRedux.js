@@ -1,6 +1,12 @@
+import Axios from 'axios';
+import { api } from '../settings.js';
+
 /* selectors */
-export const getAll = ({posts}) => posts.data;
-export const getPublished = ({ posts }) => posts.data.filter(el => el.status === 'published');
+export const getAll = ({ posts }) => posts.data;
+// ++ export const getPublished = ({ posts }) => posts.data.filter(el => el.status === 'published');
+
+export const getLoadingState = ({ posts }) => posts.loading;
+
 
 /* action name creator */
 const reducerName = 'posts';
@@ -24,6 +30,20 @@ export const updatePost = payload => ({ payload, type: UPDATE_POST });
 
 
 /* thunk creators */
+export const fetchFromAPI = () => {
+  return (dispatch, getState) => {
+    dispatch(fetchStarted());
+
+    Axios
+      .get(`${api.url}/${api.posts}`)
+      .then(res => {
+        dispatch(fetchSuccess(res.data));
+      })
+      .catch(err => {
+        dispatch(fetchError(err.message || true));
+      });
+  };
+};
 
 /* reducer */
 export const reducer = (statePart = [], action = {}) => {
